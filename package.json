@@ -11,19 +11,19 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/filename-transformer/filename-transformer#readme",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/filename-transformer/filename-transformer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/filename-transformer/filename-transformer.git"
   },
   "license": "MIT",
   "author": {
     "name": "Electron React Boilerplate Maintainers",
     "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "url": "https://filename-transformer.js.org"
   },
   "contributors": [
     {
@@ -240,7 +240,7 @@
     }
   },
   "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
+    "url": "https://opencollective.com/filename-transformer-594"
   },
   "devEngines": {
     "node": ">=14.x",
