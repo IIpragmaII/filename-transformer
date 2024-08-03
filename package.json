@@ -1,5 +1,5 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "Transforms filenames according to api response",
   "keywords": [
     "electron",
     "boilerplate",
@@ -174,8 +174,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Filename Transformer",
+    "appId": "org.erb.FilenameTransformer",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -234,8 +234,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "IIpragmaII",
+      "repo": "filename-transformer"
     }
   },
   "collective": {
