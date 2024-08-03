@@ -1,10 +1,14 @@
 import {
   Box,
   Button,
+  createTheme,
+  CssBaseline,
   IconButton,
   InputAdornment,
   TextField,
+  ThemeProvider,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -12,53 +16,76 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function App() {
   const [folderPath, setFolderPath] = useState();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],
+  );
 
   const onClick = () => {
     window.electron.ipcRenderer
       .invoke('open')
-      .then((folderPath) => folderPath && setFolderPath(folderPath));
+      .then(
+        (selectedFolderPath) =>
+          selectedFolderPath && setFolderPath(selectedFolderPath),
+      )
+      .catch(() => {});
   };
 
   return (
-    <Box>
-      <Typography variant="h4" color={'primary'}>
-        Filename Transformer
-      </Typography>
-      <Typography>
-        Select folder where files are stored on your local system. Then Press
-        "Get Filenames" to start transforming.
-      </Typography>
-      <Box display={'flex'} marginTop={3}>
-        <TextField
-          sx={{ width: '100%' }}
-          value={folderPath || ''}
-          label="Select Folder"
-          InputLabelProps={{ shrink: !!folderPath }}
-          InputProps={{
-            readOnly: true,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={onClick}
-                  edge="end"
-                >
-                  <FolderOpenIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ margin: 2 }}>
+        <Typography variant="h4" color="primary">
+          Filename Transformer
+        </Typography>
+        <Typography>
+          Select folder where files are stored on your local system. Then Press
+          &quot;Get Filenames&quot; to start transforming.
+        </Typography>
+        <Box display="flex" marginTop={3}>
+          <TextField
+            sx={{ width: '100%' }}
+            value={folderPath || ''}
+            label="Select Folder"
+            InputLabelProps={{ shrink: !!folderPath }}
+            InputProps={{
+              readOnly: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={onClick}
+                    edge="end"
+                  >
+                    <FolderOpenIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+        <Box display="flex" marginTop={2}>
+          <Button
+            variant="contained"
+            sx={{ marginY: 'auto' }}
+            startIcon={<PlayCircleFilledIcon />}
+            disabled={!folderPath}
+          >
+            Get Filenames
+          </Button>
+        </Box>
       </Box>
-      <Box display={'flex'} marginTop={2}>
-        <Button sx={{ marginY: 'auto' }} startIcon={<PlayCircleFilledIcon />}>
-          Get Filenames
-        </Button>
-      </Box>
-    </Box>
+    </ThemeProvider>
   );
 }

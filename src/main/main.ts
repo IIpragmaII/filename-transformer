@@ -25,13 +25,14 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.handle('open', async (event, arg) => {
+ipcMain.handle('open', async () => {
   const selectedFolder = await dialog.showOpenDialog({
     properties: ['openDirectory'],
   });
   if (!selectedFolder.canceled) {
     return selectedFolder.filePaths[0];
   }
+  return null;
 });
 
 if (process.env.NODE_ENV === 'production') {
