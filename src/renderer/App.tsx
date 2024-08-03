@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   createTheme,
   CssBaseline,
   IconButton,
@@ -17,9 +16,11 @@ import '@fontsource/roboto/700.css';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import { useMemo, useState } from 'react';
+import { LoadingButton } from '@mui/lab';
 
 export default function App() {
   const [folderPath, setFolderPath] = useState();
+  const [loading, setLoading] = useState(false);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const theme = useMemo(
@@ -40,6 +41,14 @@ export default function App() {
           selectedFolderPath && setFolderPath(selectedFolderPath),
       )
       .catch(() => {});
+  };
+
+  const onStartTransforming = () => {
+    setLoading(true);
+    window.electron.ipcRenderer
+      .invoke('transform', folderPath)
+      .then(() => setLoading(false))
+      .catch(() => setLoading(false));
   };
 
   return (
@@ -76,14 +85,17 @@ export default function App() {
           />
         </Box>
         <Box display="flex" marginTop={2}>
-          <Button
+          <LoadingButton
+            loading={loading}
+            loadingPosition="start"
+            onClick={onStartTransforming}
             variant="contained"
             sx={{ marginY: 'auto' }}
             startIcon={<PlayCircleFilledIcon />}
             disabled={!folderPath}
           >
             Get Filenames
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
     </ThemeProvider>

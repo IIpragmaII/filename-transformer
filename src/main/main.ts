@@ -9,6 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -32,6 +33,22 @@ ipcMain.handle('open', async () => {
   if (!selectedFolder.canceled) {
     return selectedFolder.filePaths[0];
   }
+  return null;
+});
+
+ipcMain.handle('transform', async (event, folderPath) => {
+  const items = fs.readdirSync(folderPath, {
+    withFileTypes: true,
+  });
+  const files = items.filter((dirent) => dirent.isFile());
+  let count = 0;
+  files.forEach((file) => {
+    count += 1;
+    fs.renameSync(
+      path.join(folderPath, file.name),
+      path.join(folderPath, `test${count}.txt`),
+    );
+  });
   return null;
 });
 
