@@ -24,6 +24,28 @@ class AppUpdater {
   }
 }
 
+const getFolderPath = () => {
+  try {
+    const fileContent = fs.readFileSync(
+      path.join(app.getPath('userData'), 'settings.json'),
+      'utf8',
+    );
+    if (!fileContent) return null;
+    const settings = JSON.parse(fileContent);
+    return settings.folderPath;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+const storeFolderPath = (folderPath: string) => {
+  fs.writeFileSync(
+    path.join(app.getPath('userData'), 'settings.json'),
+    JSON.stringify({ folderPath }),
+  );
+};
+
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.handle('open', async () => {
@@ -37,6 +59,7 @@ ipcMain.handle('open', async () => {
 });
 
 ipcMain.handle('transform', async (event, folderPath) => {
+  storeFolderPath(folderPath);
   const items = fs.readdirSync(folderPath, {
     withFileTypes: true,
   });
@@ -50,6 +73,10 @@ ipcMain.handle('transform', async (event, folderPath) => {
     );
   });
   return null;
+});
+
+ipcMain.handle('getFolderPath', async () => {
+  return getFolderPath();
 });
 
 if (process.env.NODE_ENV === 'production') {

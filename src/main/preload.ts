@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'open' | 'transform';
+export type Channels = 'open' | 'transform' | 'getFolderPath';
 
 const electronHandler = {
   ipcRenderer: {

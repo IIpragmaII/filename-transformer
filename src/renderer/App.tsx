@@ -15,13 +15,20 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 
 export default function App() {
   const [folderPath, setFolderPath] = useState();
   const [loading, setLoading] = useState(false);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  useEffect(() => {
+    window.electron.ipcRenderer
+      .invoke('getFolderPath')
+      .then((initialFolderPath) => setFolderPath(initialFolderPath))
+      .catch(() => {});
+  }, []);
 
   const theme = useMemo(
     () =>
