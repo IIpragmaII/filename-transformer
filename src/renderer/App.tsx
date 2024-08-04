@@ -24,7 +24,7 @@ export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   useEffect(() => {
-    window.electron.ipcRenderer
+    window?.electron?.ipcRenderer
       .invoke('getFolderPath')
       .then((initialFolderPath) => setFolderPath(initialFolderPath))
       .catch(() => {});
